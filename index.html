@@ -1,0 +1,137 @@
+<!doctype html> 
+<html> 
+<head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    
+    <title>随机密码生成器 轩哥QQ：211611411</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="jquery.min.js"></script>
+    
+    <!-- 页面通用自定义css文件 -->
+    <link rel="stylesheet" href="style.css" />
+    
+<style>
+.tool-body {
+    max-width: 600px;
+    margin: 0 auto;
+}
+</style>
+
+</head> 
+
+<body>
+
+<div id="particles"></div>
+<div><br></div>
+<div class="container">
+    
+
+<div class="panel panel-default">
+    <div class="panel-heading">随机密码生成器</div>
+    <div class="panel-body tool-body">
+        
+        <div class="form-group">
+            <label class="checkbox-inline">
+                <input type="checkbox" id="include_number" checked>
+                数字
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="include_lowercaseletters" checked>
+                小写字母
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="include_uppercaseletters" checked>
+                大写字母
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="include_punctuation">
+                标点符号
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="password_unique">
+                字符不重复
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">密码长度</span>
+                <input type="number" id="password_length" class="form-control" min="0" value="8">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">密码数量</span>
+                <input type="number" id="password_quantity" class="form-control" min="0" value="5">
+            </div>
+        </div>
+        
+        <div class="form-group text-center">
+            <button id="generate" class="btn btn-default">生成密码</button>
+        </div>
+        
+        <textarea id="output" class="form-control" cols="40" rows="7" readonly></textarea>
+    </div>
+</div>
+
+<script>
+var $ = function(s){return document.getElementById(s)},
+	$includeNumber = $("include_number"),
+	$includeLowercaseletters = $("include_lowercaseletters"),
+	$includeUppercaseletters = $("include_uppercaseletters"),
+	$includePunctuation = $("include_punctuation"),
+	$passwordUnique = $("password_unique"),
+	$passwordLength = $("password_length"),
+	$passwordQuantity = $("password_quantity"),
+	$generate = $("generate"),
+	$output = $("output");
+
+function rand(max) {
+    return Math.floor(Math.random() * max);
+};
+
+$generate.onclick = function () {
+    var chars = "";
+
+    if ($includeNumber.checked) chars += "0123456789";
+    if ($includeLowercaseletters.checked) chars += "abcdefghijklmnopqrstuvwxyz";
+    if ($includeUppercaseletters.checked) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if ($includePunctuation.checked) chars += "`~!@#$%^&*()-_=+[{]}\|;:'\",<.>/?";
+
+    var passwords = [],
+		passwordUnique = $passwordUnique.checked;
+    for (var i = 0, l = $passwordQuantity.value; i < l; i++) {
+        var _chars = chars.split(""),
+			password = "";
+        for (var j = 0, k = $passwordLength.value; j < k; j++) {
+            if (_chars.length < 1) break;
+            var index = rand(_chars.length);
+            password += _chars[index];
+            if (passwordUnique) _chars.splice(index, 1);
+        };
+        passwords.push(password);
+    };
+    $output.value = passwords.join("\n");
+};
+
+$output.onfocus = function () {
+    this.select();
+}
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">工具简介</div>
+    <div class="panel-body">
+        随机密码生成器 - 随机字符串生成器
+    </div>
+</div>
+
+</div><!--class="container"中部容器-->
+
+</body> 
+</html> 
